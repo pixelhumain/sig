@@ -34,6 +34,7 @@ class ApiController extends Controller {
     public function actions()
     {
         return array(
+            'index'             => 'application.components.api.controllers.IndexAction',
             //********************************************************************************
             //          MAP
             //********************************************************************************
@@ -44,14 +45,6 @@ class ApiController extends Controller {
             
         );
     }
-    /**
-     * List all the latest observations
-     * @return [json Map] list
-     */
-	public function actionIndex() 
-	{
-	    $this->render("../../../../components/api/views/index", array("path"=>Yii::app()->params["modulePath"].$this::$moduleKey.'.views.api.') );
-	}
 
   	/*
     public function actionLinkUser2Group() 
