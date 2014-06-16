@@ -191,7 +191,7 @@ $this->pageTitle=$this::moduleTitle;
             if( $("#whosaveGroup").val() )
               params["group"] = $("#whosaveGroup").val();
             
-            testitpost("saveGroupResult",'/ph/<?php echo $this::$moduleKey?>/api/saveGroup',params);
+            testitpost("saveGroupResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/saveGroup',params);
           }
         </script>
     </div>
@@ -229,7 +229,7 @@ $this->pageTitle=$this::moduleTitle;
                    "where":$("#whereaddEvent").val(),
                    "group":$("#whoaddEvent").val()
                 };
-          testitpost("addEventResult",'/ph/<?php echo $this::$moduleKey?>/api/saveGroup',params);
+          testitpost("addEventResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/saveGroup',params);
         }
         
       </script>
@@ -267,7 +267,7 @@ $this->pageTitle=$this::moduleTitle;
                "msg" : $("#sendMessagemsg").val(),
                "app":"<?php echo $this::$moduleKey?>"
                };
-          testitpost("sendMessageResult",'/ph/<?php echo $this::$moduleKey?>/api/sendMessage',params);
+          testitpost("sendMessageResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/sendMessage',params);
         }
         function setPeople(){
           $("#sendMessageemail").val("");
@@ -327,14 +327,14 @@ $this->pageTitle=$this::moduleTitle;
                "email" : $("#linkUser2Groupemail").val() , 
                "name" : $("#linkUser2GroupGroup").val() 
                };
-          testitpost("linkUser2GroupResult",'/ph/<?php echo $this::$moduleKey?>/api/linkUser2Group',params);
+          testitpost("linkUser2GroupResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/linkUser2Group',params);
         }
         function unlinkUser2Group(){
           params = { 
                "email" : $("#linkUser2Groupemail").val() , 
                "name" : $("#linkUser2GroupGroup").val() 
                };
-          testitpost("linkUser2GroupResult",'/ph/<?php echo $this::$moduleKey?>/api/unlinkUser2Group',params);
+          testitpost("linkUser2GroupResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/unlinkUser2Group',params);
         }
       </script>
     </div>
@@ -455,7 +455,7 @@ function getGroups(filterTag)
 {
   console.log("getGroups",filterTag);
   var params = {"app":"<?php echo $this::$moduleKey?>"};
-  testitpost("info",'/ph/<?php echo $this::$moduleKey?>/api/getgroupsby/fields/email,name,tags',params,
+  testitpost("info", baseUrl+'/<?php echo $this::$moduleKey?>/api/getgroupsby/fields/email,name,tags',params,
             function(data)
             {
               $.each(data,function(k,v)
@@ -466,7 +466,7 @@ function getGroups(filterTag)
                 edges.push({from: 1, to: k});
 
                 //get people for each sub contents
-                testitpost("info",'/ph/<?php echo $this::$moduleKey?>/api/getpeopleby/fields/email,name',{"groupname":v.name},
+                testitpost("info", baseUrl+'/<?php echo $this::$moduleKey?>/api/getpeopleby/fields/email,name',{"groupname":v.name},
                                 function(data)
                                 { 
                                   $.each(data,function(kk,vv){

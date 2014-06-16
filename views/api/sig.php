@@ -131,7 +131,7 @@
 				function initMapSavePos(){
 					mapSavePosition = loadMap("mapCanvasSavePosition");
 					//recupere les données du citoyen connecté
-					testitget("addPositionUserResult",'/ph/<?php echo $this::$moduleKey?>/api/getCitoyenConnected/', 	
+					testitget("addPositionUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/getCitoyenConnected/', 	
 					function (data){
 							if(data == null) { $("#addPositionUserResult").html ( "Vous devez être connecté pour enregistrer votre position"); }
 							else 
@@ -175,7 +175,7 @@
 				function savePositionUser(){
 					if(newMarker != null) {					
 						var params = {  "lat" : newMarker.getPosition().lat() ,  "lng" : newMarker.getPosition().lng() };
-						testitpost("addPositionUserResult",'/ph/<?php echo $this::$moduleKey?>/api/savePositionUser', params);
+						testitpost("addPositionUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/savePositionUser', params);
 						$("#addPositionUserResult").html("votre position a bien été enregistrée");
 					}
 				}
@@ -212,7 +212,7 @@
 				function showCitoyens(){ 
 					mapCitoyens = loadMap("mapCanvasCitoyens");
 					listMarkersCitoyens = new Array();
-					testitget("showInsertMuserResult",'/ph/<?php echo $this::$moduleKey?>/api/showCitoyens/', 
+					testitget("showInsertMuserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/showCitoyens/', 
 						function (data){
 						 	$.each(data, function()
 							{
@@ -240,7 +240,7 @@
 				function showCities(){ 
 					mapCitoyens = loadMap("mapCanvasCitoyens");
 					
-					testitget("showInsertMuserResult",'/ph/<?php echo $this::$moduleKey?>/api/showCities/', 
+					testitget("showInsertMuserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/showCities/', 
 						function (data){
 							var nbCities=0;
 						 	$.each(data, function()
