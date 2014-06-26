@@ -1,90 +1,95 @@
-<ul>
+ <style type="text/css">
+  .mapCanvas1 {
+    width:70%; 
+    height:300px; 
+    background-color:grey; 
+    text-align:center; 
+    font-size:12; 
+    margin:5px;
+  }
+  </style>
+
+	<link href="<?php echo Yii::app()->theme->baseUrl;?>/assets/css/MarkerCluster.css" />
+	<link href="<?php echo Yii::app()->theme->baseUrl;?>/assets/css/MarkerCluster.Default.css" />
+	       
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="<?php echo Yii::app()->theme->baseUrl;?>/assets/js/leaflet.draw-src.js" type="text/javascript"></script> 
+	<script src="<?php echo Yii::app()->theme->baseUrl;?>/assets/js/leaflet.draw.js" type="text/javascript"></script> 
+	<script src="<?php echo Yii::app()->theme->baseUrl;?>/assets/js/leaflet.markercluster-src.js"></script>
+
+<ul>  
 	<li class="block" id="blockLogin">
+		<div class="apiForm importData">
+			<h4>> Importer les données indispensables au SIG</h4>
+			<h5>Nom de la base de données à utiliser pour insérer les données : par defaut "pixelhumain" </h5>
+			<input type="text" id="dbName" name="dbName" value="pixelhumain"/>	<br/>
+			<a href="javascript:importData()">Importer les données</a><br/>
+			<div id="importDataResult" class="result fss"></div>
+
+		<script>
+			function importData(){
+				params = { 	"dbName" : $("#dbName").val() ,
+							"app":"<?php echo $this::$moduleKey?>"  };
+				testitpost("importDataResult", '/ph/<?php echo $this::$moduleKey?>/api/importData',params);
+				$("#importDataResult").html("Le chargement des données est en cours, cela peut durer quelques minutes...");				
+			}
+			</script>
+			
+		</div>
+	</li>
+<li class="block" id="blockLogin">
 		<div class="fss">
-			Test d'affichage de la carte<br/>
+			<h4>Test d'affichage de la carte</h4>
 		</div>
 		<div class="apiForm login">
-			<div id="mapCanvas" style="width:500px; height:250px; background-color:grey; text-align:center; font-size:20px;"
-				 >
+			<div id="mapCanvas" class="mapCanvas1" >
 			</br>Chargement de la carte ...
-			</div>	
-						
-			<a href="javascript:addMarkerList()">Ajouter une liste de marker</a><br/>
-		
+			</div>						
+			<a href="javascript:addMarkerList()">Ajouter une liste de marker</a><br/>	
 			<div id="loadResult" class="result fss"></div>
-			
-			<script src="http://maps.google.com/maps/api/js?sensor=false" language="JavaScript" type="text/javascript" ></script>
-
-			<script>
-				
+			<script>							
 				//##
 				function loadMap(canvasId){
-				//initialisation des variables de départ de la carte
-  				var mapOptions = {
-					zoom: 4,
-					center: new google.maps.LatLng(47, 3),
-					mapTypeId: google.maps.MapTypeId.TERRAIN,
-					mapTypeControl: false,
-					mapTypeControlOptions: {
-						style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-						position: google.maps.ControlPosition.BOTTOM_CENTER
-					},
-					zoomControl: false,
-					zoomControlOptions: {
-						style: google.maps.ZoomControlStyle.SMALL,
-						position: google.maps.ControlPosition.RIGHT_BOTTOM
-					},
-					scaleControl: true,
-					scaleControlOptions: {
-						position: google.maps.ControlPosition.BOTTOM_CENTER
-					},
-					streetViewControl: false,
-					panControl: false
-				}
-
-				//crée la carte
-				return new google.maps.Map(document.getElementById(canvasId), mapOptions);
-				}
-				
-				
-				
+					//initialisation des variables de départ de la carte
+  					var map = L.map(canvasId).setView([51.505, -0.09], 4);
+    		
+    				L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
+    					subdomains: "1234",
+    					attribution: "&copy; <a href='http://www.openstreetmap.org/'>OpenStreetMap</a> and contributors, under an <a href='http://www.openstreetmap.org/copyright' title='ODbL'>open license</a>. Tiles Courtesy of <a href='http://www.mapquest.com/'>MapQuest</a> <img src='http://developer.mapquest.com/content/osm/mq_logo.png'>"
+         			}).addTo(map);
+         		
+         			return map;
+				}								
 				//##
 				//créer un marker sur la carte, en fonction de sa position géographique
 				function addMarker(thisMap, options){ //ex : lat = -34.397; lng = 150.644;
-				var marker = new google.maps.Marker	({	
-  								position: new google.maps.LatLng(options.lat, options.lng), 
-      							map: thisMap,
-      							draggable:true,
-      							icon:getIcoMarker(options.type)
-								//shadow:shadow
-      							});
-      				
-      				//par défault ajoute une bulle lorsqu'on clique sur le marker		
-      				google.maps.event.addListener(marker, 'click', 
-					function(event){	
-						var contentString = options.contentInfoWin;
-						if(options.contentInfoWin == null) contentString = "info window"; 		
-      					openInfoWindow(this, contentString);
-      				});
-      				
-      				return marker;
-				}
 				
+					var contentString = options.contentInfoWin;
+					if(options.contentInfoWin == null) contentString = "info window"; 
+					
+					var markerOptions = { icon : getIcoMarker(options.type),
+										  draggable : true };
+					
+					var marker = L.marker([options.lat, options.lng], markerOptions).addTo(thisMap)
+    				.bindPopup(contentString)
+    				.openPopup();
+    	
+    				return marker;
+				}							
 				//##
 				//récupère le nom de l'icon en fonction du type de marker souhaité
 				function getIcoMarker(type){
-					if(type == "citoyen") 	return "/ph/images/map/markers/user_h_black.png";
-					if(type == "city") 		return "/ph/images/map/markers/city.png";
-				
+					if(type == "citoyen") 	return L.icon({ iconUrl: "/ph/images/sig/markers/user_h_black.png",
+															iconSize: 		[19, 40],
+										  					iconAnchor: 	[10, 40],
+    									  					popupAnchor: 	[0, -40] });
+					
+					if(type == "city") 	return L.icon({ iconUrl: "/ph/images/sig/markers/city.png",
+															iconSize: 		[32, 32],
+										  					iconAnchor: 	[16, 32],
+    									  					popupAnchor: 	[0, -32] });		
 				}
-								
-				//##
-				//ouvrir une bulle sur un marker, avec le contenu a afficher
-				function openInfoWindow(marker, content){
-					var infoWin = new google.maps.InfoWindow({   content: content	});	//crée la bulle
-      				infoWin.open(marker.getMap(), marker); //ouvre la bulle
-				}
-				
+													
 				//##
 				//ajouter une liste de marker sur la carte
 				function addMarkerList(markerList){
@@ -96,7 +101,6 @@
 										{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyen", "contentInfoWin" : "N°4" }, 
 										{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyen", "contentInfoWin" : "N°5" } ];
 					/*test*/	
-					laMap = loadMap("mapCanvas");				
 					for(var i=0; i<markerList.length; i++){
 						addMarker(laMap, markerList[i]);
 					}
@@ -104,18 +108,16 @@
 				
 				var laMap = loadMap("mapCanvas");
 				
-			</script>
-			
+			</script>			
 		</div>
 	</li>
 
 	<li class="block" id="blockLogin">
-		<a href="/ph/<?php echo $this::$moduleKey?>/api/getCitoyenConnected">Afficher la position de l'utilisateur connecté</a><br/>
 		<div class="fss">
-			Enregistrement de ma position en BD<br/>
+			<h4>Enregistrement/modification de ma position en BD (when logged)</h4>
 		</div>
 		<div class="apiForm login">
-			<div id="mapCanvasSavePosition" style="width:500px; height:250px; background-color:grey; text-align:center; font-size:20px;">
+			<div id="mapCanvasSavePosition" class="mapCanvas1">
 			</br>Chargement de la carte ...
 			</div>	
 			<a href="javascript:initMapSavePos()">Afficher ma position</a><br/>			
@@ -129,7 +131,6 @@
 				//##
 				//initialise la carte qui sert à enregistrer la position de l'utilisateur connecté
 				function initMapSavePos(){
-					mapSavePosition = loadMap("mapCanvasSavePosition");
 					//recupere les données du citoyen connecté
 					testitget("addPositionUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/getCitoyenConnected/', 	
 					function (data){
@@ -161,10 +162,11 @@
 																		    "lng":lng, 
 																		    "type" : "citoyen", 
 																		    "contentInfoWin":content });
+								newMarker.dragging.enable();
+								newMarker.openPopup();
 								//centre la carte sur le nouveau marker
-								mapSavePosition.setCenter(new google.maps.LatLng(lat, lng));
+								mapSavePosition.panTo([lat, lng]);
 								mapSavePosition.setZoom(11);		
-								google.maps.event.trigger(newMarker, 'click');
 				 			}
 					});
 						
@@ -174,77 +176,46 @@
 				//enregistre la position du marker
 				function savePositionUser(){
 					if(newMarker != null) {					
+						var params = {  "lat" : newMarker.getLatLng().lat ,  "lng" : newMarker.getLatLng().lng };
+						testitpost("addPositionUserResult",'/ph/<?php echo $this::$moduleKey?>/api/savePositionUser', params);
+
 						var params = {  "lat" : newMarker.getPosition().lat() ,  "lng" : newMarker.getPosition().lng() };
 						testitpost("addPositionUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/savePositionUser', params);
+
 						$("#addPositionUserResult").html("votre position a bien été enregistrée");
 					}
-				}
-				
+				}				
 				mapSavePosition = loadMap("mapCanvasSavePosition");
-				initMapSavePos();
+				
 			</script>
 			
 		</div>
 	</li>
 
 	<li class="block" id="blockLogin">
-		<a href="/ph/<?php echo $this::$moduleKey?>/api/showCitoyens/">Afficher les citoyens</a><br/>
+		<h4>Afficher les villes</h4>
 		<div class="fss">
-			Afficher les citoyens inscrits en BD, et modifier leurs positions<br/>
+			Afficher les villes de la BD<br/>
 			+ Afficher les villes<br/>
 		</div>
 		<div class="apiForm login">
-			<div id="mapCanvasCitoyens" style="width:500px; height:250px; background-color:grey; text-align:center; font-size:20px;"
-				 >
+			<div id="mapCanvasCitoyens" class="mapCanvas1">
 			</br>Chargement de la carte ...
 			</div>	
-			<a href="javascript:showCitoyens()">Afficher les citoyens</a><br/>		
 			<a href="javascript:showCities()">Afficher les villes</a><br/>		
 			<div id="showCitiesResult" class="result fss"></div>
 			
 			<script>
 				var mapCitoyens = loadMap("mapCanvasCitoyens");
-				var listMarkersCitoyens = new Array();
 				var listCities = new Array();
-				
-				//##
-				//affiche les citoyens qui possèdent des attributs geo.latitude, geo.longitude, depuis la BD
-				function showCitoyens(){ 
-					mapCitoyens = loadMap("mapCanvasCitoyens");
-					listMarkersCitoyens = new Array();
-					testitget("showInsertMuserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/showCitoyens/', 
-						function (data){
-						 	$.each(data, function()
-							{
-								if(this['geo'] != null){
-				 					var content = "";
-				 					if(this['name'] != null)  content += 	"<b>" + this['name'] + "</b><br/>";
-				 					if(this['email'] != null)  content += 	this['email'] + "<br/>";
-				 					if(this['cp'] != null)     content += 	this['cp'] + "<br/>";
-				 					if(this['phoneNumber'] != null)     content += 	this['phoneNumber'] + "<br/>";
-				 					
-				 					//récupère un nouveau marker
-				 					var leMarker = addMarker(mapCitoyens, { "lat" : this['geo']['latitude'],   
-				 															"lng" : this['geo']['longitude']  , 
-				 															"type" : "citoyen", 
-				 															"contentInfoWin" : content });
-				 					//garde ce marker en mémoire, avec le mail correspondant
-				 					listMarkersCitoyens.push( { "email" : this['email'], "marker" : leMarker } );
-				 				}
-							});
-						});
-				}
-				
+							
 				//##
 				//affiche les villes qui possèdent des attributs lat, lng, depuis la BD
 				function showCities(){ 
-					mapCitoyens = loadMap("mapCanvasCitoyens");
-					
 					testitget("showInsertMuserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/showCities/', 
 						function (data){
 							var nbCities=0;
-						 	$.each(data, function()
-							{
+						 	$.each(data, function() {
 								//vérifie qu'on a bien les positions géographiques
 								if(this['geo'] != null && 
 									//et que la ville n'a pas déjà été affichée (pb CP grand villes avec des arrondissements)
@@ -275,10 +246,10 @@
 
 	<li class="block" id="blockLogin">
 		<div class="fss">
-			Délimiter une zone de diffusion<br/>
+			<h4>Délimiter une zone de diffusion</h4>
 		</div>
 		<div class="apiForm login">
-			<div id="mapCanvasBounds" style="width:500px; height:250px; background-color:grey; text-align:center; font-size:20px;">
+			<div id="mapCanvasBounds" class="mapCanvas1">
 			</br>Chargement de la carte ...
 			</div>	
 			<a href="javascript:loadRectangleArea()">Afficher la zone</a><br/>		
@@ -293,15 +264,15 @@
 				//affiche un rectangle sur la carte
 				function loadRectangleArea()
 				{
-					var rectangleOptions = {   
-						editable: true,
-						bounds: mapZone.getBounds(),
-						map: mapZone,
-						fillColor: 'yellow',
-						fillOpacity: 0.3,
-						visible: true }
-					
-					RectangleArea = new google.maps.Rectangle(rectangleOptions);
+					var bounds = mapZone.getBounds();
+					RectangleArea = L.rectangle(bounds, {
+												color: "yellow", 
+												weight: 2,
+												fillOpacity: 0.3,
+												clickable: true
+											}).addTo(mapZone);
+											
+					RectangleArea.editing.enable();						
 					mapZone.setZoom(mapZone.getZoom()-1);
 				}
 			
@@ -309,10 +280,11 @@
 				//affiche les coordonnées correspondant aux limites du rectangle
 				function showBound(){
 					var bounds = RectangleArea.getBounds();
-					$("#showBoundsResult").html ( "latMax : " + bounds.getNorthEast().lat() + "<br/>" +
-												  "lngMax : " + bounds.getNorthEast().lng() + "<br/>" +
-												  "latMin : " + bounds.getSouthWest().lat() + "<br/>" +
-												  "lngMin : " + bounds.getSouthWest().lng() + "<br/>" );
+		
+					$("#showBoundsResult").html ( "latMin : " + bounds.getSouthWest().lat + "<br/>" +
+												  "lngMin : " + bounds.getSouthWest().lng + "<br/>" +
+												  "latMax : " + bounds.getNorthEast().lat + "<br/>" +
+												  "lngMax : " + bounds.getNorthEast().lng + "<br/>" );
 				}
 			</script>
 			
@@ -321,3 +293,167 @@
 
 
 
+<li class="block" id="blockLogin">
+		<div class="fss">
+			<h4>Afficher les citoyens avec les clusters</h4>
+		</div>
+		<div class="apiForm login">
+			<div id="mapCanvasClusters" class="mapCanvas1">
+			</br>Chargement de la carte ...
+			</div>	
+			<a href="javascript:showCitoyensClusters()">Afficher les citoyens avec cluster</a><br/>		
+			<div id="showBoundsResult" class="result fss"></div>
+
+		<script>				
+				var mapClusters = loadMap("mapCanvasClusters");
+				var markersLayer = new L.MarkerClusterGroup();
+				mapClusters.addLayer(markersLayer);// add it to the map
+				
+				var geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
+				
+				//##
+				//affiche les citoyens qui possèdent des attributs geo.latitude, geo.longitude, depuis la BD
+				function showCitoyensClusters(){ 
+					
+					geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
+					markersLayer.clearLayers();			
+					
+					testitget("showBoundsResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/showCitoyens/', 
+						function (data){
+						 	$.each(data, function() {
+								if(this['geo'] != null){
+				 					var content = "";
+				 					if(this['name'] != null)  content += 	"<b>" + this['name'] + "</b><br/>";
+				 					if(this['email'] != null)  content += 	this['email'] + "<br/>";
+				 					if(this['cp'] != null)     content += 	this['cp'] + "<br/>";
+				 					if(this['phoneNumber'] != null)     content += 	this['phoneNumber'] + "<br/>";
+				 					if(this['geo'] != null)     content += 	this['geo']['latitude'] + " - " + this['geo']['longitude'] + "<br/>";
+				 					
+				 					var properties = { 	title : this['name'], 
+				 										icon : getIcoMarker("citoyen"),
+				 										content: content };
+				 					
+				 					var marker = getGeoJsonMarker(properties, new Array(this['geo']['longitude'], this['geo']['latitude']));
+				 					geoJsonCollection['features'].push(marker);				 					
+				 				}
+							});
+							var points_rand = L.geoJson(geoJsonCollection, {
+							onEachFeature: function (feature, layer) {
+									layer.bindPopup(feature["properties"]["content"]);
+									layer.setIcon(feature["properties"]["icon"]);
+								}
+							});
+						
+							markersLayer.addLayer(points_rand); 	// add it to the cluster group
+							mapClusters.addLayer(markersLayer);// add it to the map
+							mapClusters.fitBounds(markersLayer.getBounds()); //set view on the cluster extend					
+						});
+				}
+				
+				
+				//##
+				//créer un marker sur la carte, en fonction de sa position géographique
+				function addMarkersCluster(thisMap, options){ //ex : lat = -34.397; lng = 150.644;			
+					var contentString = options.contentInfoWin;
+					if(options.contentInfoWin == null) contentString = "info window"; 
+					
+					var markerOptions = { icon : getIcoMarker(options.type),
+										  draggable : true };
+					
+    				var geoJson = getGeoJsonMarker(markerOptions, [options.lat, options.lng]);
+    				markersLayer.addLayer(geoJson);
+    				return geoJson;
+				}
+								
+				//##
+				//créé une donnée geoJson
+				function getGeoJsonMarker(properties/*json*/, coordinates/*array[lat, lng]*/) {
+					return { "type": 'Feature',
+							 "properties": properties,
+							 "geometry": { type: 'Point',
+							 			 coordinates: coordinates } };
+				}
+			</script>		
+		</div>
+	</li>
+
+
+
+<li class="block">
+<h4>Create/Update user with postion (facultatif)</h4><br/>
+<div class="fss">
+	url : /ph/<?php echo $this::$moduleKey?>/api/saveUser<br/>
+	method type : POST <br/>
+	Form inputs : email,postalcode,pwd,phoneNumber(is optional)<br/>
+	return json object {"result":true || false}
+</div>
+<div class="apiForm createUser">
+	name : <input type="text" name="nameSaveUser" id="nameSaveUser" value="<?php echo $this::$moduleKey?> User" /><br/>
+	email* : <input type="text" name="emailSaveUser" id="emailSaveUser" value="<?php echo $this::$moduleKey?>@<?php echo $this::$moduleKey?>.com" /><br/>
+	pwd* : <input type="text" name="pwdSaveUser" id="pwdSaveUser" value="1234" /><br/>
+	phoneNumber : <input type="text" name="phoneNumberSaveUser" id="phoneNumberSaveUser" value="1234" />(for SMS)<br/>
+	cp* : <input type="text" name="postalcodeSaveUser" id="postalcodeSaveUser" value="17000" /><br/>
+
+	<a href="javascript:initPosNewUser()">Je souhaite indiquer ma position sur la carte</a><br/>
+
+	<div id="mapCanvasInsLoader"></div>	
+	
+	type : 	<select name="typeSaveUser" id="typeSaveUser">
+	<option value="<?php echo $this::$moduleKey?>">Participant</option>
+	<option value="admin<?php echo $this::$moduleKey?>">admin<?php echo $this::$moduleKey?></option>
+			</select><br/>
+
+	<a href="javascript:addUser()">Valider l'inscription</a><br/>
+	<div id="createUserResult" class="result fss"></div>
+	<script>
+	function addUser(){
+		params = { 
+			"email" : $("#emailSaveUser").val() ,
+			"name" : $("#nameSaveUser").val() ,
+			"cp" : $("#postalcodeSaveUser").val() ,
+			"pwd":$("#pwdSaveUser").val() ,
+			"type" : $("#typeSaveUser").val(),
+			"phoneNumber" : $("#phoneNumberSaveUser").val(),
+			"app":"<?php echo $this::$moduleKey?>" };
+
+		if(markerNewUser != null)
+		params['geo'] = {  "latitude" : markerNewUser.getLatLng().lat ,  "longitude" : markerNewUser.getLatLng().lng };
+
+		//alert(JSON.stringify(params));
+		testitpost("createUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/saveUser',params);
+	}
+	
+	var mapIns;
+	/*$(document).ready(function () {  //charger la carte au chargement de la page
+	mapIns = loadMap("mapCanvasIns");
+	});
+	*/
+
+	//$( "#postalcodeSaveUser" ).change(function() {
+	//if(($("#postalcodeSaveUser").val()).length >= 4)
+	//});
+
+	var markerNewUser;
+	function initPosNewUser(){
+		$('#mapCanvasInsLoader').html('<div id="mapCanvasIns" class="mapCanvas1"> </br>Chargement de la carte ... </div>');
+		
+		if(mapIns == null)
+		mapIns = loadMap("mapCanvasIns");
+		testitget("createUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/getPositionCp/cp/'+$("#postalcodeSaveUser").val(), 	
+				function (data){
+					if(data == null) { $("#createUserResult").html ( "pas de réponse"); }
+					else {
+						var options = { 	"lat":data['lat'] , 
+											"lng":data['lng'], 
+											"type" : "citoyen", 
+											"contentInfoWin": "Déplacez le curseur pour indiquer une autre position si vous le souhaitez." 
+										};
+								
+						markerNewUser= addMarker(mapIns, options);	
+						//centre la carte sur le nouveau marker
+						mapSavePosition.panTo([data['lat'], data['lng']]);
+					}							
+				});
+	}
+</script>
+</div>

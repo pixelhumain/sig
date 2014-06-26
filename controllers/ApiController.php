@@ -9,7 +9,7 @@
  */
 class ApiController extends Controller {
 
-    const moduleTitle = "API SIG";
+    const moduleTitle = "API SIG";   
     public static $moduleKey = "sig";
     public $sidebar1 = array(
             
@@ -17,11 +17,6 @@ class ApiController extends Controller {
                 "children"=> array(
                     array( "label" => "initMap", "href" => "javascript:;","iconClass"=>"fa fa-sitemap", )
                 )),
-            /*array('label' => "Views", "key"=>"views", "iconClass"=>"fa fa-eye", 'menuOnly'=>true,
-                "children"=> array(
-                    array( "label" => "Graph", "href" => "/ph/egpc","iconClass"=>"fa fa-sitemap", )
-                )),
-            */
         );
     public $percent = 60; //TODO link it to unit test
 
@@ -42,6 +37,9 @@ class ApiController extends Controller {
             'showcitoyens'          	=> 'application.controllers.sig.ShowCitoyensAction',
             'showcities'          		=> 'application.controllers.sig.ShowCitiesAction',           
             'getcitoyenconnected' 		=> 'application.controllers.sig.GetCitoyenConnectedAction',           
+            'importdata' 				=> 'application.controllers.sig.ImportDataAction',           
+            'saveuser' 					=> 'application.controllers.sig.SaveUserAction',           
+            'getpositioncp' 			=> 'application.controllers.sig.GetPositionCpAction',           
             
         );
     }
