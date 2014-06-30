@@ -8,7 +8,7 @@
     margin:5px;
   }
   </style>
-
+ 
 	<link href="<?php echo Yii::app()->theme->baseUrl;?>/assets/css/MarkerCluster.css" />
 	<link href="<?php echo Yii::app()->theme->baseUrl;?>/assets/css/MarkerCluster.Default.css" />
 	       
