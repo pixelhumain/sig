@@ -511,7 +511,8 @@
 	url : /ph/<?php echo $this::$moduleKey?>/api/saveGeoposition<br/>
 	method type : POST <br/>
 	Form inputs : map<br/>
-	return json object {"result":true || false}
+	return json object {"result":true || false}<br/><br/>
+	!! >> UTILISER UN _id EXISTANT EN BDD >> javascript:initSaveNewPos('citoyens', =>_id : '53c55520c0461fd7030496b3')
 </div>
 
 <div class="apiForm createUser">
