@@ -1,11 +1,40 @@
  <style type="text/css">
   .mapCanvas1 {
     width:70%; 
-    height:300px; 
+    height:350px; 
     background-color:grey; 
     text-align:center; 
     font-size:12; 
-    margin:5px;
+    margin-top:5px;
+    margin-bottom:5px;
+  }
+  .div_right_tool_map{
+  	float:right; 
+  	width:30%;
+  }
+  .titleMapListItems{
+  	width:100%;
+	height: 60px;
+	background-color:grey; 
+   	font-size:12;
+   	float:right;
+  }
+  .mapListItems{
+  	width:100%;
+	height: 290px;
+	background-color:grey; 
+   	font-size:12;
+   	float:right;
+   	overflow-y:auto;
+  }
+  .mapListItems .itemMapList{
+  	height:30px;
+  	background-color:white; 	
+  }
+  .mapListItems .itemMapList:hover{
+  	height:30px;
+  	background-color:grey;
+  	color:white; 	
   }
   </style>
  
@@ -79,15 +108,21 @@
 				//##
 				//récupère le nom de l'icon en fonction du type de marker souhaité
 				function getIcoMarker(type){
-					if(type == "citoyen") 	return L.icon({ iconUrl: "/ph/images/sig/markers/user_h_black.png",
+					if(type == "citoyens") 	return L.icon({ iconUrl: "/ph/images/sig/markers/user_h_black.png",
 															iconSize: 		[19, 40],
 										  					iconAnchor: 	[10, 40],
     									  					popupAnchor: 	[0, -40] });
+    									  					
 					
-					if(type == "city") 	return L.icon({ iconUrl: "/ph/images/sig/markers/city.png",
+					if(type == "city") 		return L.icon({ iconUrl: "/ph/images/sig/markers/city.png",
 															iconSize: 		[32, 32],
 										  					iconAnchor: 	[16, 32],
-    									  					popupAnchor: 	[0, -32] });		
+    									  					popupAnchor: 	[0, -32] });	
+    									  					
+    				if(type == "groups") 	return L.icon({ iconUrl: "/ph/images/sig/markers/groups.png",
+															iconSize: 		[32, 32],
+										  					iconAnchor: 	[16, 32],
+    									  					popupAnchor: 	[0, -32] });						  						
 				}
 													
 				//##
@@ -95,11 +130,11 @@
 				function addMarkerList(markerList){
 					/*test*/
 					var lat = 47; var lng = 3;
-					var markerList = [	{ "lat" : lat,   "lng" : lng  , "type" : "citoyen", "contentInfoWin" : "N°1" }, 
-										{ "lat" : lat+1, "lng" : lng+1, "type" : "citoyen", "contentInfoWin" : "N°2" }, 
-										{ "lat" : lat+2, "lng" : lng+2, "type" : "citoyen", "contentInfoWin" : "N°3" }, 
-										{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyen", "contentInfoWin" : "N°4" }, 
-										{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyen", "contentInfoWin" : "N°5" } ];
+					var markerList = [	{ "lat" : lat,   "lng" : lng  , "type" : "citoyens", "contentInfoWin" : "N°1" }, 
+										{ "lat" : lat+1, "lng" : lng+1, "type" : "citoyens", "contentInfoWin" : "N°2" }, 
+										{ "lat" : lat+2, "lng" : lng+2, "type" : "citoyens", "contentInfoWin" : "N°3" }, 
+										{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyens", "contentInfoWin" : "N°4" }, 
+										{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyens", "contentInfoWin" : "N°5" } ];
 					/*test*/	
 					for(var i=0; i<markerList.length; i++){
 						addMarker(laMap, markerList[i]);
@@ -160,7 +195,7 @@
 							 	//crée le marker sur la carte
 								newMarker = addMarker(mapSavePosition, { 	"lat":lat , 
 																		    "lng":lng, 
-																		    "type" : "citoyen", 
+																		    "type" : "citoyens", 
 																		    "contentInfoWin":content });
 								newMarker.dragging.enable();
 								newMarker.openPopup();
@@ -298,8 +333,16 @@
 			<h4>Afficher les citoyens avec les clusters</h4>
 		</div>
 		<div class="apiForm login">
+			
+			<div class="div_right_tool_map">
+				<div class="titleMapListItems">
+					<h4>Liste des citoyens :</h4>
+				</div>
+				<div id="mapListItems" class="mapListItems"></div>
+			</div>
+			
 			<div id="mapCanvasClusters" class="mapCanvas1">
-			</br>Chargement de la carte ...
+			<br/>Chargement de la carte ...
 			</div>	
 			<a href="javascript:showCitoyensClusters()">Afficher les citoyens avec cluster</a><br/>		
 			<div id="showBoundsResult" class="result fss"></div>
@@ -320,6 +363,7 @@
 					
 					testitget("showBoundsResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/showCitoyens/', 
 						function (data){
+							var listItemMap = "";
 						 	$.each(data, function() {
 								if(this['geo'] != null){
 				 					var content = "";
@@ -330,22 +374,29 @@
 				 					if(this['geo'] != null)     content += 	this['geo']['latitude'] + " - " + this['geo']['longitude'] + "<br/>";
 				 					
 				 					var properties = { 	title : this['name'], 
-				 										icon : getIcoMarker("citoyen"),
+				 										icon : getIcoMarker("citoyens"),
 				 										content: content };
 				 					
 				 					var marker = getGeoJsonMarker(properties, new Array(this['geo']['longitude'], this['geo']['latitude']));
-				 					geoJsonCollection['features'].push(marker);				 					
+				 					geoJsonCollection['features'].push(marker);	
+				 					
+				 					//crée la liste à afficher à droite de la carte
+				 					listItemMap += "<div class='itemMapList'>" + this['name'] + "</div>";	 								 					
 				 				}
 							});
+							
+							//affiche la liste d'éléments
+							$('#mapListItems').html(listItemMap);
+							
 							var points_rand = L.geoJson(geoJsonCollection, {
-							onEachFeature: function (feature, layer) {
-									layer.bindPopup(feature["properties"]["content"]);
-									layer.setIcon(feature["properties"]["icon"]);
+							onEachFeature: function (feature, layer) {				   //Sur chaque marker
+									layer.bindPopup(feature["properties"]["content"]); //ajoute la bulle d'info avec les données
+									layer.setIcon(feature["properties"]["icon"]);	   //et affiche l'icon demandé
 								}
 							});
 						
 							markersLayer.addLayer(points_rand); 	// add it to the cluster group
-							mapClusters.addLayer(markersLayer);// add it to the map
+							mapClusters.addLayer(markersLayer);		// add it to the map
 							mapClusters.fitBounds(markersLayer.getBounds()); //set view on the cluster extend					
 						});
 				}
@@ -406,6 +457,10 @@
 	<a href="javascript:addUser()">Valider l'inscription</a><br/>
 	<div id="createUserResult" class="result fss"></div>
 	<script>
+	
+	var mapIns;
+	var markerNewUser;
+	
 	function addUser(){
 		params = { 
 			"email" : $("#emailSaveUser").val() ,
@@ -423,17 +478,6 @@
 		testitpost("createUserResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/saveUser',params);
 	}
 	
-	var mapIns;
-	/*$(document).ready(function () {  //charger la carte au chargement de la page
-	mapIns = loadMap("mapCanvasIns");
-	});
-	*/
-
-	//$( "#postalcodeSaveUser" ).change(function() {
-	//if(($("#postalcodeSaveUser").val()).length >= 4)
-	//});
-
-	var markerNewUser;
 	function initPosNewUser(){
 		$('#mapCanvasInsLoader').html('<div id="mapCanvasIns" class="mapCanvas1"> </br>Chargement de la carte ... </div>');
 		
@@ -445,7 +489,7 @@
 					else {
 						var options = { 	"lat":data['lat'] , 
 											"lng":data['lng'], 
-											"type" : "citoyen", 
+											"type" : "citoyens", 
 											"contentInfoWin": "Déplacez le curseur pour indiquer une autre position si vous le souhaitez." 
 										};
 								
@@ -457,3 +501,79 @@
 	}
 </script>
 </div>
+</li>
+
+
+
+<li class="block">
+<h4>Set postion of any PH_Type (by _id)</h4><br/>
+<div class="fss">
+	url : /ph/<?php echo $this::$moduleKey?>/api/saveGeoposition<br/>
+	method type : POST <br/>
+	Form inputs : map<br/>
+	return json object {"result":true || false}
+</div>
+
+<div class="apiForm createUser">
+	<div id="mapCanvasNewPos"class="mapCanvas1"> </br>Chargement de la carte ... </div>	
+	<a class="btn" href="javascript:initSaveNewPos('citoyens', '53c55520c0461fd7030496b3')">Initialiser la carte</a><br/>
+	<a class="btn" href="javascript:saveGeoposition('citoyens', '53c55520c0461fd7030496b3')">Valider la position de l'élément</a><br/>
+	
+	<div id="savePosResult" class="result fss"></div>
+
+	<script>
+	var mapNewPos;
+	var markerNewPos;
+	var object = false;
+	function initSaveNewPos(typePH, object_id){ //object = json
+		
+		$('#mapCanvasSavePosLoader').html('<div id="mapCanvasNewPos" class="mapCanvas1"> </br>Chargement de la carte ... </div>');
+	
+		//récupère l'objet demandé
+		
+		//var object = { "cp": 75000 };
+		testitget("savePosResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/getCpObject/typePH/'+typePH+'/object_id/'+object_id, 	
+				function (data1){
+					object = data1;
+				
+					//si l'objet n'a pas de CP enregistré on ne peut pas le localiser
+					if(object['cp'] != null) {
+					testitget("savePosResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/getPositionCp/cp/'+object['cp'], 	
+							function (data2){
+								if(data2 == null) { $("#createUserResult").html ( "pas de réponse"); }
+								else {
+									var options = { 	"lat":data2['lat'] , 
+														"lng":data2['lng'], 
+														"type" : typePH, 
+														"contentInfoWin": "Déplacez le curseur pour indiquer une autre position si vous le souhaitez." 
+													};
+									if(markerNewPos != null) mapNewPos.removeLayer(markerNewPos);
+						
+									markerNewPos = addMarker(mapNewPos, options);	
+									//centre la carte sur le nouveau marker
+									mapNewPos.panTo([data2['lat'], data2['lng']]);
+								}							
+							});
+					}else{
+					$('#savePosResult').html("Cet élément n'a pas de code postal");
+					}});
+	}
+	
+	
+	function saveGeoposition(typePH, object_id){
+		var params = new Array();
+
+		if(markerNewPos != null)
+		params = { 		  "_id": object_id, 
+						  "type" : typePH,
+						  "geo": { "latitude" : markerNewPos.getLatLng().lat ,  "longitude" : markerNewPos.getLatLng().lng }
+				 };
+
+		alert(JSON.stringify(params));
+		testitpost("savePosResult", baseUrl+'/<?php echo $this::$moduleKey?>/api/saveGeoposition',params);
+	}
+	
+	mapNewPos = loadMap("mapCanvasNewPos"); 
+	</script>
+</div>
+</li>
