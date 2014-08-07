@@ -18,8 +18,8 @@ class SigModule extends CWebModule
 
 		// import the module-level models and components
 		$this->setImport(array(
-			'sig.models.*',
-			'sig.components.*',
+			$this->id.'.models.*',
+			$this->id.'.components.*',
 		));
 	}
 
@@ -33,5 +33,15 @@ class SigModule extends CWebModule
 		}
 		else
 			return false;
+	}
+	
+	private $_assetsUrl;
+
+	public function getAssetsUrl()
+	{
+		if ($this->_assetsUrl === null)
+	        $this->_assetsUrl = Yii::app()->getAssetManager()->publish(
+	            Yii::getPathOfAlias($this->id.'.assets') );
+	    return $this->_assetsUrl;
 	}
 }

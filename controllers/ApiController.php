@@ -1,23 +1,14 @@
 <?php
 /**
- * DefaultController.php
- *
- * API REST pour gérer l'application SIG
+ * ApiController.php
  *
  * @author: Tristan Goguet <tristan.goguet@gmail.com>
- * Date: 14/03/2014
+ * Date: 02/08/2014
  */
 class ApiController extends Controller {
 
-    const moduleTitle = "API SIG";   
+    const moduleTitle = "Sig";
     public static $moduleKey = "sig";
-    public $sidebar1 = array(
-            
-            array('label' => "Sig", "key"=>"sig", "iconClass"=>"fa fa-eye",
-                "children"=> array(
-                    array( "label" => "initMap", "href" => "javascript:;","iconClass"=>"fa fa-sitemap", )
-                )),
-        );
     public $percent = 60; //TODO link it to unit test
 
     protected function beforeAction($action)
@@ -28,23 +19,7 @@ class ApiController extends Controller {
 
     public function actions()
     {
-        return array(
-            'index'             => 'application.components.api.controllers.IndexAction',
-            //********************************************************************************
-            //          MAP
-            //********************************************************************************
-            'savepositionuser'          => 'application.controllers.sig.SavePositionUserAction',
-            'showcitoyens'          	=> 'application.controllers.sig.ShowCitoyensAction',
-            'showcities'          		=> 'application.controllers.sig.ShowCitiesAction',           
-            'getcitoyenconnected' 		=> 'application.controllers.sig.GetCitoyenConnectedAction',           
-            'importdata' 				=> 'application.controllers.sig.ImportDataAction',           
-            'saveuser' 					=> 'application.controllers.sig.SaveUserAction',           
-            'getpositioncp' 			=> 'application.controllers.sig.GetPositionCpAction',           
-            'getcpobject' 				=> 'application.controllers.sig.GetCpObjectAction',           
-            'savegeoposition' 			=> 'application.controllers.sig.SaveGeopositionAction',           
-            
-        );
+        array_push($this->sidebar1,Api::getSigMap()); 
+        return Api::buildActionMap($this->sidebar1);
     }
-
-
 }
