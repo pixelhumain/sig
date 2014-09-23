@@ -22,7 +22,7 @@ class DefaultController extends Controller {
     protected function beforeAction($action)
   	{
   		Yii::app()->theme  = "oneScreenApp";
-		  return parent::beforeAction($action);
+		return parent::beforeAction($action);
   	}
 
     /**
