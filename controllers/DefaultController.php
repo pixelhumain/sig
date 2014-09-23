@@ -21,7 +21,7 @@ class DefaultController extends Controller {
     
     protected function beforeAction($action)
   	{
-  		Yii::app()->theme  = "oneScreenApp";
+  		Yii::app()->theme  = "juntos";
 		return parent::beforeAction($action);
   	}
 
