@@ -1,57 +1,72 @@
 <?php 
-/*$cs = Yii::app()->getClientScript();
+$cs = Yii::app()->getClientScript();
+
 $cs->registerCssFile(Yii::app()->request->baseUrl. '/css/vis.css');
 $cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/api.js' , CClientScript::POS_END);
-$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/vis.min.js' , CClientScript::POS_END);*/
+$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/vis.min.js' , CClientScript::POS_END);
+
+$cs->registerCssFile("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css");
+//$cs->registerCssFile(Yii::app()->theme->baseUrl. '/css/sig/leaflet.css');
+$cs->registerCssFile(Yii::app()->theme->baseUrl. '/css/sig/leaflet.draw.css');
+$cs->registerCssFile(Yii::app()->theme->baseUrl. '/css/sig/leaflet.draw.ie.css');
+$cs->registerCssFile(Yii::app()->theme->baseUrl. '/css/sig/MarkerCluster.css');
+$cs->registerCssFile(Yii::app()->theme->baseUrl. '/css/sig/MarkerCluster.Default.css');
+$cs->registerCssFile(Yii::app()->theme->baseUrl. '/css/sig/sig.css');
+
+$cs->registerScriptFile('http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js' , CClientScript::POS_END);
+$cs->registerScriptFile(Yii::app()->theme->baseUrl.'/js/sig/leaflet.draw-src.js' , CClientScript::POS_END);
+$cs->registerScriptFile(Yii::app()->theme->baseUrl.'/js/sig/leaflet.draw.js' , CClientScript::POS_END);
+$cs->registerScriptFile(Yii::app()->theme->baseUrl.'/js/sig/leaflet.markercluster-src.js' , CClientScript::POS_END);
+
 $this->pageTitle=$this::moduleTitle;
 ?>
 <style type="text/css">
+ .mapCanvasSlider{
+ 	min-width:100%;
+ 	min-height:600px;
+ 	background-color:#425766;
+ }
+ 
+ #project .slide-content .mapCanvasSlider img{
+ 	border-radius:0px;
+ 	box-shadow: 0px 0px 0px 0px;
+ }
+ 
+ #project{
+ 	color:black;
+ }
  
 </style>
+
+	<script src="http://code.jquery.com/jquery.js"></script>
+		
+	
+	
 <!-- START PROJECT SECTION -->
 <section id="project" class="section" >
 	<span class="sequence-prev" ></span>
 	<span class="sequence-next" ></span>
     <ul class="sequence-canvas">
-    	<li class="animate-in" style="background-image: url('<?php echo Yii::app()->theme->baseUrl;?>/images/slider/1.jpg');">
-        	<div class="slide-content">
-            	<h1>Welcome !</h1>
-            	<h3>We're #ASSOCIATION-NAME, a young Charity Association ! We build School in #COUNTRY to globalize knowledge and education... 
-				(you can add here any kind of content such as description, button, images...)</h3>
+    	<li style="background-color: #3b4a52;">
+        	<div class="slide-content" style="width:100%; left:0px;">
+            	<div class="mapCanvasSlider" id="mapCanvasSlide1">
+            	
+        		</div>
         	</div>
     	</li>
-    	<li style="background-color: #82b440;">
-        	<div class="slide-content">
-            	<h1>Our Project</h1>
-            	<h3>Describe here your project in a few sentences, to explain to your visitors what you're doing and what you need their help, 
-            	or maybe something else </h3>
-            	<div class="progress progress-striped">
-				  <div class="progress-bar progress-bar-success" style="width: 80%">
-				    <span class="sr-only">Fundraising to realize our Amazing project</span>
-				  </div>
-				</div>
-				<div class="pull-right">
-					<a href="#donation" class="btn btn-default">Help us with a Donation</a>
-				</div>
-        	</div>
-    	</li>
-    	<li style="background-color: #0DB4E9;">
-        	<div class="slide-content">
-            	<h1>Who Is Behind</h1>
-            	<div class="center">
-            		<img src="<?php echo Yii::app()->theme->baseUrl;?>/images/slider/funder.jpg" class="pull-left" alt="image in slider slide">
-	            	<h3>Funder Name</h3>
-	            	<p>Few words about the creation, the ideas, biography of the funder...</p>
-					<a href="#" class="btn btn-twitter"><span class="icon icon-twitter"></span> Twitter</a>
-            	</div>
+    	<li style="background-color: #3b4a52;">
+        	<div class="slide-content" style="width:100%; left:0px;">
+            	<div class="mapCanvasSlider" id="mapCanvasSlide2">
+            	
+        		</div>
         	</div>
     	</li>
     </ul>
 	<ul class="sequence-pagination">
-		<li>Welcome</li>
-		<li>Our Project</li>
-		<li>Who is behind</li>
+		<li>Pixels actifs</li>
+		<li>Communectés</li>
 	</ul>
+	<div id="importDataResult"></div>
 </section>
 <!-- END PROJECT SECTION -->
 
@@ -59,5 +74,163 @@ $this->pageTitle=$this::moduleTitle;
 
 $(document).ready( function() 
 { 
+	
+	function loadMap(canvasId){
+		//initialisation des variables de départ de la carte
+		var map = L.map(canvasId).setView([51.505, -0.09], 4);
 
+		L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20
+	}).setOpacity(0.4).addTo(map);
+	
+	//u.osmfr.org/m/5061/
+	
+		map.on('click', function(e) {
+    		alert(map.getCenter()); // e is an event object (MouseEvent in this case)
+		});
+		return map;
+	}								
+	//##
+	//créer un marker sur la carte, en fonction de sa position géographique
+	function addMarker(thisMap, options){ //ex : lat = -34.397; lng = 150.644;
+	
+		var contentString = options.contentInfoWin;
+		if(options.contentInfoWin == null) contentString = "info window"; 
+		
+		var markerOptions = { icon : getIcoMarker(options.type),
+							  draggable : true };
+		
+		var marker = L.marker([options.lat, options.lng], markerOptions).addTo(thisMap)
+		.bindPopup(contentString);
+		//.openPopup();
+
+		return marker;
+	}							
+	//##
+	//récupère le nom de l'icon en fonction du type de marker souhaité
+	function getIcoMarker(type){
+		if(type == "citoyens") 	return L.icon({ iconUrl: "/ph/images/sig/markers/user_h_black.png",
+												iconSize: 		[19, 40],
+												iconAnchor: 	[10, 40],
+												popupAnchor: 	[0, -40] });
+												
+		
+		if(type == "pixelactif") 		return L.icon({ iconUrl: "/ph/images/sig/markers/city.png",
+												iconSize: 		[32, 32],
+												iconAnchor: 	[16, 32],
+												popupAnchor: 	[0, -32] });	
+												
+		if(type == "partenaire") 	return L.icon({ iconUrl: "/ph/images/sig/markers/groups.png",
+												iconSize: 		[32, 32],
+												iconAnchor: 	[16, 32],
+												popupAnchor: 	[0, -32] });						  						
+	}
+										
+	//##
+	//ajouter une liste de marker sur la carte
+	function addMarkerList(map){
+		/*test*/
+		var lat = 47; var lng = 3;
+		var markerList = [	{ "lat" : lat,   "lng" : lng  , "type" : "citoyens", "contentInfoWin" : "N°1" }, 
+							{ "lat" : lat+1, "lng" : lng+1, "type" : "citoyens", "contentInfoWin" : "N°2" }, 
+							{ "lat" : lat+2, "lng" : lng+2, "type" : "citoyens", "contentInfoWin" : "N°3" }, 
+							{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyens", "contentInfoWin" : "N°4" }, 
+							{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyens", "contentInfoWin" : "N°5" } ];
+		/*test*/	
+		for(var i=0; i<markerList.length; i++){
+			addMarker(map, markerList[i]);
+		}
+	}
+	
+	
+
+				function initClusterMap(canvas){
+					if(mapClusters != null) mapClusters.remove();
+					
+					mapClusters = loadMap(canvas);
+					markersLayer = new L.MarkerClusterGroup();
+					mapClusters.addLayer(markersLayer);// add it to the map
+					geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
+				}
+				
+				
+				//##
+				//affiche les citoyens qui possèdent des attributs geo.latitude, geo.longitude, depuis la BD
+				function showCitoyensClusters(mapClusters){ 
+					
+					geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
+					markersLayer.clearLayers();			
+					
+					testitget("showCitoyensResult", '/ph/<?php echo $this::$moduleKey?>/api/showCitoyens',
+						function (data){
+							//var listItemMap = "";
+						 	$.each(data, function() {  	
+								if(this['geo'] != null){
+				 					var content = "";
+				 					if(this['name'] != null)   content += 	"<b>" + this['name'] + "</b><br/>";
+				 					if(this['email'] != null)  content += 	this['email'] + "<br/>";
+				 					if(this['cp'] != null)     content += 	this['cp'] + "<br/>";
+				 					if(this['phoneNumber'] != null)     content += 	this['phoneNumber'] + "<br/>";
+				 					if(this['geo'] != null)    content += 	this['geo']['latitude'] + " - " + this['geo']['longitude'] + "<br/>";
+				 					
+				 					var properties = { 	title : this['name'], 
+				 										icon : getIcoMarker("citoyens"),
+				 										content: content };
+				 					
+				 					var marker = getGeoJsonMarker(properties, new Array(this['geo']['longitude'], this['geo']['latitude']));
+				 					geoJsonCollection['features'].push(marker);	
+				 					
+				 					//crée la liste à afficher à droite de la carte
+				 					//listItemMap += "<div class='itemMapList'>" + this['name'] + "</div>";	 								 					
+				 				}
+							});
+							
+							//affiche la liste d'éléments à droite de la carte
+							//$('#mapListItems').html(listItemMap);
+							
+							var points_rand = L.geoJson(geoJsonCollection, {
+							onEachFeature: function (feature, layer) {				   //Sur chaque marker
+									layer.bindPopup(feature["properties"]["content"]); //ajoute la bulle d'info avec les données
+									layer.setIcon(feature["properties"]["icon"]);	   //et affiche l'icon demandé
+								}
+							});
+						
+							markersLayer.addLayer(points_rand); 	// add it to the cluster group
+							mapClusters.addLayer(markersLayer);		// add it to the map
+							//mapClusters.fitBounds(markersLayer.getBounds()); //set view on the cluster extend					
+						});
+				}
+								
+								
+				//##
+				//créé une donnée geoJson
+				function getGeoJsonMarker(properties/*json*/, coordinates/*array[lat, lng]*/) {
+					return { "type": 'Feature',
+							 "properties": properties,
+							 "geometry": { type: 'Point',
+							 			 coordinates: coordinates } };
+				}
+	
+	
+	var map1 = loadMap("mapCanvasSlide1");
+	map1.setView([30.29702, -21.97266], 3);
+	addMarkerList(map1);
+	
+	
+	var map2 = loadMap("mapCanvasSlide2");
+	map2.setView([-21.13318, 55.5314], 10);
+	
+	var markersLayer;	
+	var geoJsonCollection;
+							
+	markersLayer = new L.MarkerClusterGroup();
+	map2.addLayer(markersLayer);
+	geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
+					
+	showCitoyensClusters(map2);
+
+});
 </script>
