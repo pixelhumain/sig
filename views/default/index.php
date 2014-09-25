@@ -23,7 +23,7 @@ $this->pageTitle=$this::moduleTitle;
 <style type="text/css">
  .mapCanvasSlider{
  	min-width:100%;
- 	min-height:600px;
+ 	min-height:100%;
  	background-color:#425766;
  }
  
@@ -34,6 +34,54 @@ $this->pageTitle=$this::moduleTitle;
  
  #project{
  	color:black;
+ }
+ 
+ .leaflet-popup-content-wrapper{
+ 	background-color:rgba(53, 61, 68, 0.7);
+ 	border-radius:10px;
+ 	color:white;
+ 	font-family: "Open Sans";
+ }
+ 
+ .leaflet-popup-tip{
+ 	background-color:rgba(53, 61, 68, 0.7);
+ }
+ 
+ .popup-img-profil{
+ 
+ }
+ 
+ 
+ 
+ .popup-info-profil{
+ 	width:100%;
+ 	text-align:center;
+ 	font-size:14px;
+ }
+ .popup-info-profil-username{
+ 	width:100%;
+ 	text-align:center;
+ 	font-size:30px;
+ 	color:yellow;
+ }
+ .popup-info-profil-usertype{
+ 	width:100%;
+ 	text-transform:capitalize;
+ 	text-align:center;
+ 	font-size:18px;
+ }
+ .popup-info-profil-work{
+ 	width:100%;
+ 	text-align:center;
+ 	font-size:18px;
+ 	text-transform:capitalize;
+ 	
+ }
+ .popup-info-profil-url{
+ 	width:100%;
+ 	text-align:center;
+ 	font-size:13px;
+ 	color:#2aa0bd;
  }
  
 </style>
@@ -47,15 +95,15 @@ $this->pageTitle=$this::moduleTitle;
 	<span class="sequence-prev" ></span>
 	<span class="sequence-next" ></span>
     <ul class="sequence-canvas">
-    	<li style="background-color: #3b4a52;">
-        	<div class="slide-content" style="width:100%; left:0px;">
+    	<li style="background-color: #3b4a52; height:70%;">
+        	<div class="slide-content" style="width:100%; left:0px; height:100%;">
             	<div class="mapCanvasSlider" id="mapCanvasSlide1">
             	
         		</div>
         	</div>
     	</li>
-    	<li style="background-color: #3b4a52;">
-        	<div class="slide-content" style="width:100%; left:0px;">
+    	<li style="background-color: #3b4a52; height:70%;">
+        	<div class="slide-content" style="width:100%; left:0px; height:100%;">
             	<div class="mapCanvasSlider" id="mapCanvasSlide2">
             	
         		</div>
@@ -66,7 +114,6 @@ $this->pageTitle=$this::moduleTitle;
 		<li>Pixels actifs</li>
 		<li>Communectés</li>
 	</ul>
-	<div id="importDataResult"></div>
 </section>
 <!-- END PROJECT SECTION -->
 
@@ -112,21 +159,21 @@ $(document).ready( function()
 	//##
 	//récupère le nom de l'icon en fonction du type de marker souhaité
 	function getIcoMarker(type){
-		if(type == "citoyens") 	return L.icon({ iconUrl: "/ph/images/sig/markers/user_h_black.png",
-												iconSize: 		[19, 40],
-												iconAnchor: 	[10, 40],
-												popupAnchor: 	[0, -40] });
+		if(type == "citoyen") 	return L.icon({ iconUrl: "/ph/images/sig/markers/02_ICON_CITOYENS.png",
+												iconSize: 		[14, 14],
+												iconAnchor: 	[7, 7],
+												popupAnchor: 	[0, -10] });
 												
 		
-		if(type == "pixelactif") 		return L.icon({ iconUrl: "/ph/images/sig/markers/city.png",
-												iconSize: 		[32, 32],
-												iconAnchor: 	[16, 32],
-												popupAnchor: 	[0, -32] });	
+		if(type == "pixelactif") 		return L.icon({ iconUrl: "/ph/images/sig/markers/02_ICON_PIXEL_ACTIF.png",
+												iconSize: 		[14, 14],
+												iconAnchor: 	[7, 7],
+												popupAnchor: 	[0, -10] });	
 												
-		if(type == "partenaire") 	return L.icon({ iconUrl: "/ph/images/sig/markers/groups.png",
-												iconSize: 		[32, 32],
-												iconAnchor: 	[16, 32],
-												popupAnchor: 	[0, -32] });						  						
+		if(type == "partenaire") 	return L.icon({ iconUrl: "/ph/images/sig/markers/02_ICON_PARTENAIRES.png",
+												iconSize: 		[14, 16],
+												iconAnchor: 	[7, 7],
+												popupAnchor: 	[0, -10] });						  						
 	}
 										
 	//##
@@ -134,11 +181,11 @@ $(document).ready( function()
 	function addMarkerList(map){
 		/*test*/
 		var lat = 47; var lng = 3;
-		var markerList = [	{ "lat" : lat,   "lng" : lng  , "type" : "citoyens", "contentInfoWin" : "N°1" }, 
-							{ "lat" : lat+1, "lng" : lng+1, "type" : "citoyens", "contentInfoWin" : "N°2" }, 
-							{ "lat" : lat+2, "lng" : lng+2, "type" : "citoyens", "contentInfoWin" : "N°3" }, 
-							{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyens", "contentInfoWin" : "N°4" }, 
-							{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyens", "contentInfoWin" : "N°5" } ];
+		var markerList = [	{ "lat" : lat,   "lng" : lng  , "type" : "citoyen", "contentInfoWin" : "N°1" }, 
+							{ "lat" : lat+1, "lng" : lng+1, "type" : "citoyen", "contentInfoWin" : "N°2" }, 
+							{ "lat" : lat+2, "lng" : lng+2, "type" : "citoyen", "contentInfoWin" : "N°3" }, 
+							{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyen", "contentInfoWin" : "N°4" }, 
+							{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyen", "contentInfoWin" : "N°5" } ];
 		/*test*/	
 		for(var i=0; i<markerList.length; i++){
 			addMarker(map, markerList[i]);
@@ -169,15 +216,51 @@ $(document).ready( function()
 							//var listItemMap = "";
 						 	$.each(data, function() {  	
 								if(this['geo'] != null){
+								
+									//préparation du contenu de la bulle
+									
+									//THUMB PHOTO PROFIL
 				 					var content = "";
-				 					if(this['name'] != null)   content += 	"<b>" + this['name'] + "</b><br/>";
-				 					if(this['email'] != null)  content += 	this['email'] + "<br/>";
-				 					if(this['cp'] != null)     content += 	this['cp'] + "<br/>";
-				 					if(this['phoneNumber'] != null)     content += 	this['phoneNumber'] + "<br/>";
-				 					if(this['geo'] != null)    content += 	this['geo']['latitude'] + " - " + this['geo']['longitude'] + "<br/>";
+				 					if(this['thumb'] != null)   
+				 					content += 	"<img src='" + this['thumb_path'] + "' height=70 class='popup-info-profil-thumb'>";
+				 					
+				 					//NOM DE L'UTILISATEUR
+				 					if(this['name'] != null)   
+				 					content += 	"<div class='popup-info-profil-username'>" + this['name'] + "</div>";
+				 					
+				 					//TYPE D'UTILISATEUR (CITOYEN, ASSO, PARTENAIRE, ETC)
+				 					var typeName = this['type'];
+				 					if(this['type'] == null)  type = "Citoyen";
+				 					content += 	"<div class='popup-info-profil-usertype'>" + typeName + "</div>";
+				 					
+				 					//WORK - PROFESSION
+				 					if(this['work'] != null)     
+				 					content += 	"<div class='popup-info-profil-work'>" + this['work'] + "</div>";
+				 					
+				 					//URL
+				 					if(this['url'] != null)     
+				 					content += 	"<div class='popup-info-profil-url'>" + this['url'] + "</div>";
+				 					
+				 					//VILLE ET PAYS
+				 					var place = this['city'];
+				 					if(this['city'] != null && this['country'] != null) place += ", ";
+				 					place += this['country'];
+				 					
+				 					if(this['city'] != null)     
+				 					content += 	"<div class='popup-info-profil'>" + place + "</div>";
+				 					
+				 					//NUMÉRO DE TEL
+				 					if(this['phoneNumber'] != null)     
+				 					content += 	"<div class='popup-info-profil'>" + this['phoneNumber'] + "<div/>";
+				 					
+				 					
+				 					//création de l'icon sur la carte
+				 					var type;
+				 					if(this['type'] != null) type = this['type'];
+				 					else type = "citoyen";
 				 					
 				 					var properties = { 	title : this['name'], 
-				 										icon : getIcoMarker("citoyens"),
+				 										icon : getIcoMarker(type),
 				 										content: content };
 				 					
 				 					var marker = getGeoJsonMarker(properties, new Array(this['geo']['longitude'], this['geo']['latitude']));
@@ -232,5 +315,8 @@ $(document).ready( function()
 					
 	showCitoyensClusters(map2);
 
+
 });
+
+
 </script>
