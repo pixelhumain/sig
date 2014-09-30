@@ -121,6 +121,7 @@ $this->pageTitle=$this::moduleTitle;
 
 $(document).ready( function() 
 { 
+	var listId = new Array();
 	
 	function loadMap(canvasId){
 		//initialisation des variables de départ de la carte
@@ -134,211 +135,231 @@ $(document).ready( function()
 		}).setOpacity(0.4).addTo(map);
 	
 		map.on('click', function(e) {
-    		//alert(map.getCenter());
+    		alert(e.latlng);
 		});
-		
-		
-		
+	
 		return map;
 	}								
+															
+				
+	//##
+	//affiche les citoyens qui possèdent des attributs geo.latitude, geo.longitude, depuis la BD
+	function showCitoyensClusters(mapClusters, origine, listId){ 
+		
+		//gère la liste des tags à ne pas clusteriser
+		var notClusteredTag = new Array("commune", "association", "projectLeader");
+		
+		var markersLayer = new L.MarkerClusterGroup({"maxClusterRadius" : 40});
+		mapClusters.addLayer(markersLayer);
+
+		var geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
+				
+		var bounds = mapClusters.getBounds();
+		var params = {};
+		params["latMinScope"] = bounds.getSouthWest().lat;
+		params["lngMinScope"] = bounds.getSouthWest().lng;
+		params["latMaxScope"] = bounds.getNorthEast().lat;
+		params["lngMaxScope"] = bounds.getNorthEast().lng;
+		
+		testitpost("showCitoyensResult", '/ph/<?php echo $this::$moduleKey?>/api/' + origine, params,
+			function (data){ 		//alert(JSON.stringify(data));
+				$.each(data, function() { 			
+					if(this._id != null){
+				
+						var origineName = data["origine"]; //alert(origineName);
+						var objectId = this._id.$id.toString();
+				
+						if($.inArray(objectId, listId[origineName]) == -1){							 	
+							if(this['geo'] != null || this['geoPosition'] != null){
+										
+								//préparation du contenu de la bulle
+						
+								//THUMB PHOTO PROFIL
+								var content = "";
+								if(this['thumb_path'] != null)   
+								content += 	"<img src='" + this['thumb_path'] + "' height=70 class='popup-info-profil-thumb'>";
+						
+								//NOM DE L'UTILISATEUR
+								if(this['name'] != null)   
+								content += 	"<div class='popup-info-profil-username'>" + this['name'] + "</div>";
+						
+								//TYPE D'UTILISATEUR (CITOYEN, ASSO, PARTENAIRE, ETC)
+								var typeName = this['type'];
+								if(this['type'] == null)  typeName = "Citoyen";
+								if(this['name'] == null)  typeName += " anonyme";
+						
+								content += 	"<div class='popup-info-profil-usertype'>" + typeName + "</div>";
+						
+								//WORK - PROFESSION
+								if(this['work'] != null)     
+								content += 	"<div class='popup-info-profil-work'>" + this['work'] + "</div>";
+						
+								//URL
+								if(this['url'] != null)     
+								content += 	"<div class='popup-info-profil-url'>" + this['url'] + "</div>";
+						
+								//CODE POSTAL
+								if(this['cp'] != null)     
+								content += 	"<div class='popup-info-profil'>" + this['cp'] + "</div>";
+						
+								//VILLE ET PAYS
+								var place = this['city'];
+								if(this['city'] != null && this['country'] != null) place += ", ";
+								place += this['country'];
+						
+								if(this['city'] != null)     
+								content += 	"<div class='popup-info-profil'>" + place + "</div>";
+						
+								//NUMÉRO DE TEL
+								if(this['phoneNumber'] != null)     
+								content += 	"<div class='popup-info-profil'>" + this['phoneNumber'] + "<div/>";
+						
+						
+								//création de l'icon sur la carte
+								var tag;
+								if(this['tag'] != null) tag = this['tag'];
+								else tag = "citoyen";
+						
+								var theIcon = getIcoMarker(tag);
+								var properties = { 	//title : this['name'], 
+													icon : theIcon,
+													content: content };
+						
+								var coordinates;
+								if( this['geo']['longitude'] != null ){
+									coordinates = new Array (this['geo']['longitude'], this['geo']['latitude']);
+								}
+								else{
+									coordinates = this['geoPosition']['coordinates'];
+								}
+						
+								var marker;
+								if($.inArray(tag, notClusteredTag) > -1){ //si le tag de l'élément est dans la liste des éléments à ne pas mettre dans les clusters
+									getMarkerSingle(mapClusters, properties, coordinates);
+							
+									listId[origineName].push(objectId);
+							
+									//alert(" single - tag : " + tag);
+									//alert(notClusteredTag);
+								} 
+								else{
+									marker = getGeoJsonMarker(properties, coordinates);
+									geoJsonCollection['features'].push(marker);	
+							
+									listId[origineName].push(objectId);
+								} 
+						
+							}
+						}
+					}
+				});
+				
+				var points = L.geoJson(geoJsonCollection, {					   //Pour les clusters seulement :
+					onEachFeature: function (feature, layer) {				   //sur chaque marker
+							layer.bindPopup(feature["properties"]["content"]); //ajoute la bulle d'info avec les données
+							layer.setIcon(feature["properties"]["icon"]);	   //affiche l'icon demandé
+							layer.on('mouseover', function(e) {	if(!layer.getPopup()._isOpen) layer.openPopup(); });
+							layer.on('mouseout',  function(e) { layer.closePopup(); });
+						}
+					});
+									
+				markersLayer.addLayer(points); 			// add it to the cluster group
+				mapClusters.addLayer(markersLayer);		// add it to the map
+			});
+						
+	}
+					
+					
+	//##
+	//créé une donnée geoJson
+	function getGeoJsonMarker(properties/*json*/, coordinates/*array[lat, lng]*/) {
+		return { "type": 'Feature',
+				 "properties": properties,
+				 "geometry": { type: 'Point',
+							 coordinates: coordinates } };
+	}
+
 	//##
 	//créer un marker sur la carte, en fonction de sa position géographique
-	function addMarker(thisMap, options){ //ex : lat = -34.397; lng = 150.644;
-	
-		var contentString = options.contentInfoWin;
-		if(options.contentInfoWin == null) contentString = "info window"; 
-		
-		var markerOptions = { icon : getIcoMarker(options.type),
-							  draggable : true };
-		
-		var marker = L.marker([options.lat, options.lng], markerOptions).addTo(thisMap)
+	function getMarkerSingle(thisMap, options, coordinates){ //ex : lat = -34.397; lng = 150.644;
+
+		var contentString = options.content;
+		if(options.content == null) contentString = "info window"; 
+
+		var markerOptions = { icon : options.icon };
+
+		var marker = L.marker(coordinates, markerOptions).addTo(thisMap)
 		.bindPopup(contentString);
-		//.openPopup();
-			
+		
+		marker.on('mouseover', function(e) { marker.openPopup(); });
+		marker.on('mouseout',  function(e) { marker.closePopup(); });
+		
 		return marker;
-	}							
+	}
+		
 	//##
 	//récupère le nom de l'icon en fonction du type de marker souhaité
-	function getIcoMarker(type){
-		/*
-		if(type == "citoyen")
-		return L.AwesomeMarkers.icon({ prefixe:'fa', icon: 'fa-circle', iconColor:"white" });
-  		
-		if(type == "pixelactif")
-		return L.AwesomeMarkers.icon({ prefixe:'fa', icon: 'fa-circle', iconColor:"white" });
-  		
-		if(type == "partenaire")
-		return L.AwesomeMarkers.icon({ prefixe:'fa', icon: 'lightbulb-o', iconColor:"white" });
-  		*/ 
-  		
-		if(type == "citoyen") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_CITOYENS.png'; ?>",
+	function getIcoMarker(tag){
+			
+  		if(tag == "citoyen") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_CITOYENS.png'; ?>",
 												iconSize: 		[14, 14],
 												iconAnchor: 	[7, 7],
-												popupAnchor: 	[0, -10] });
-												
-		
-		if(type == "pixelActif") 		return L.icon({ iconUrl: "/ph/images/sig/markers/02_ICON_PIXEL_ACTIF.png",
+												popupAnchor: 	[0, -14] });
+													
+		if(tag == "pixelActif") 		return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_PIXEL_ACTIF.png'; ?>",
 												iconSize: 		[14, 14],
-												iconAnchor: 	[7, 7],
-												popupAnchor: 	[0, -10] });	
-												
-		if(type == "partnerPH") 	return L.icon({ iconUrl: "/ph/images/sig/markers/02_ICON_PARTENAIRES.png",
+												iconAnchor: 	[7,  14],
+												popupAnchor: 	[0, -14] });	
+																								
+		if(tag == "partnerPH") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_PARTENAIRES.png'; ?>",
 												iconSize: 		[14, 16],
-												iconAnchor: 	[7, 7],
-												popupAnchor: 	[0, -10] });						  						
+												iconAnchor: 	[7,  16],
+												popupAnchor: 	[0, -14] });		
+													
+		if(tag == "commune") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_COMMUNES.png'; ?>",
+												iconSize: 		[14, 14],
+												iconAnchor: 	[7,  14],
+												popupAnchor: 	[0, -14] });		
+		
+		if(tag == "association") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_ASSOCIATIONS.png'; ?>",
+												iconSize: 		[15, 13],
+												iconAnchor: 	[7,  13],
+												popupAnchor: 	[0, -13] });		
+		
+		if(tag == "projectLeader") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_PORTEUR_PROJET.png'; ?>",
+												iconSize: 		[15, 16],
+												iconAnchor: 	[7,  16],
+												popupAnchor: 	[0, -16] });		
+		
+		if(tag == "artiste") 	return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_ARTISTES.png'; ?>",
+												iconSize: 		[17, 19],
+												iconAnchor: 	[8,  19],
+												popupAnchor: 	[0, -19] });		
+		
+		return L.icon({ iconUrl: "<?php echo $this->module->assetsUrl.'/image/markers/02_ICON_CITOYENS.png'; ?>",
+												iconSize: 		[14, 14],
+												iconAnchor: 	[7,  14],
+												popupAnchor: 	[0, -14] });			  						
 	}
-										
-	//##
-	//ajouter une liste de marker sur la carte
-	function addMarkerList(map){
-		/*test*/
-		var lat = 47; var lng = 3;
-		var markerList = [	{ "lat" : lat,   "lng" : lng  , "type" : "citoyen", "contentInfoWin" : "N°1" }, 
-							{ "lat" : lat+1, "lng" : lng+1, "type" : "citoyen", "contentInfoWin" : "N°2" }, 
-							{ "lat" : lat+2, "lng" : lng+2, "type" : "citoyen", "contentInfoWin" : "N°3" }, 
-							{ "lat" : lat+3, "lng" : lng+3, "type" : "citoyen", "contentInfoWin" : "N°4" }, 
-							{ "lat" : lat+4, "lng" : lng+4, "type" : "citoyen", "contentInfoWin" : "N°5" } ];
-		/*test*/	
-		for(var i=0; i<markerList.length; i++){
-			addMarker(map, markerList[i]);
-		}
-	}
 	
-	
-	
-
-				
-				//##
-				//affiche les citoyens qui possèdent des attributs geo.latitude, geo.longitude, depuis la BD
-				function showCitoyensClusters(mapClusters, origine){ 
-					
-					var markersLayer = new L.MarkerClusterGroup();
-					mapClusters.addLayer(markersLayer);
-	
-					var geoJsonCollection = { type: 'FeatureCollection', features: new Array() };
-					//markersLayer.clearLayers();			
-					
-					var bounds = mapClusters.getBounds();
-					var params = {};
-					params["latMinScope"] = bounds.getSouthWest().lat;
-					params["lngMinScope"] = bounds.getSouthWest().lng;
-					params["latMaxScope"] = bounds.getNorthEast().lat;
-					params["lngMaxScope"] = bounds.getNorthEast().lng;
-				
-					testitpost("showCitoyensResult", '/ph/<?php echo $this::$moduleKey?>/api/' + origine, params,
-						function (data){ //alert(JSON.stringify(data));
-							//var listItemMap = "";
-						 	$.each(data, function() {  	
-								if(this['geo'] != null){
-								
-									//préparation du contenu de la bulle
-									
-									//THUMB PHOTO PROFIL
-				 					var content = "";
-				 					if(this['thumb_path'] != null)   
-				 					content += 	"<img src='" + this['thumb_path'] + "' height=70 class='popup-info-profil-thumb'>";
-				 					
-				 					//NOM DE L'UTILISATEUR
-				 					if(this['name'] != null)   
-				 					content += 	"<div class='popup-info-profil-username'>" + this['name'] + "</div>";
-				 					
-				 					//TYPE D'UTILISATEUR (CITOYEN, ASSO, PARTENAIRE, ETC)
-				 					var typeName = this['type'];
-				 					if(this['type'] == null)  typeName = "Citoyen";
-				 					if(this['name'] == null)  typeName += " anonyme";
-				 					
-				 					content += 	"<div class='popup-info-profil-usertype'>" + typeName + "</div>";
-				 					
-				 					//WORK - PROFESSION
-				 					if(this['work'] != null)     
-				 					content += 	"<div class='popup-info-profil-work'>" + this['work'] + "</div>";
-				 					
-				 					//URL
-				 					if(this['url'] != null)     
-				 					content += 	"<div class='popup-info-profil-url'>" + this['url'] + "</div>";
-				 					
-				 					//CODE POSTAL
-				 					if(this['cp'] != null)     
-				 					content += 	"<div class='popup-info-profil'>" + this['cp'] + "</div>";
-				 					
-				 					//VILLE ET PAYS
-				 					var place = this['city'];
-				 					if(this['city'] != null && this['country'] != null) place += ", ";
-				 					place += this['country'];
-				 					
-				 					if(this['city'] != null)     
-				 					content += 	"<div class='popup-info-profil'>" + place + "</div>";
-				 					
-				 					//NUMÉRO DE TEL
-				 					if(this['phoneNumber'] != null)     
-				 					content += 	"<div class='popup-info-profil'>" + this['phoneNumber'] + "<div/>";
-				 					
-				 					
-				 					//création de l'icon sur la carte
-				 					var type;
-				 					if(this['type'] != null) type = this['type'];
-				 					else if(this['tags'] != null) type = this['tags'];
-				 					else type = "citoyen";
-				 					
-				 					var properties = { 	title : this['name'], 
-				 										icon : getIcoMarker(type),
-				 										content: content };
-				 					
-				 					var marker = getGeoJsonMarker(properties, new Array(this['geo']['longitude'], this['geo']['latitude']));
-				 					geoJsonCollection['features'].push(marker);	
-				 					
-				 					//crée la liste à afficher à droite de la carte
-				 					//listItemMap += "<div class='itemMapList'>" + this['name'] + "</div>";	 								 					
-				 				}
-							});
-							
-							//affiche la liste d'éléments à droite de la carte
-							//$('#mapListItems').html(listItemMap);
-							
-							var points = L.geoJson(geoJsonCollection, {
-							onEachFeature: function (feature, layer) {				   //Sur chaque marker
-									layer.bindPopup(feature["properties"]["content"]); //ajoute la bulle d'info avec les données
-									layer.setIcon(feature["properties"]["icon"]);	   //et affiche l'icon demandé
-									layer.on('mouseover', function(e) {
-										layer.openPopup();
-									});
-									layer.on('mouseout', function(e) {
-										layer.closePopup();
-									});
-								}
-							});
-						
-							markersLayer.addLayer(points); 	// add it to the cluster group
-							mapClusters.addLayer(markersLayer);		// add it to the map
-							//mapClusters.fitBounds(markersLayer.getBounds()); //set view on the cluster extend					
-						});
-				}
-								
-								
-				//##
-				//créé une donnée geoJson
-				function getGeoJsonMarker(properties/*json*/, coordinates/*array[lat, lng]*/) {
-					return { "type": 'Feature',
-							 "properties": properties,
-							 "geometry": { type: 'Point',
-							 			 coordinates: coordinates } };
-				}
-	
-	
+		
+	//charge la première carte (pixel actif)
 	var map1 = loadMap("mapCanvasSlide1");
 	map1.setView([30.29702, -21.97266], 3);
-	showCitoyensClusters(map1, "getPixelActif");
-	//addMarkerList(map1);
-	
+	listId["getPixelActif"] = new Array();
+	map1.on('dragend', function(e) {
+    		showCitoyensClusters(map1, "getPixelActif", listId);
+		}); showCitoyensClusters(map1, "getPixelActif", listId);
 		
-		
-	
+			
+	//charge la deuxième carte (communected)
 	var map2 = loadMap("mapCanvasSlide2");
 	map2.setView([-21.13318, 55.5314], 10);
-	showCitoyensClusters(map2, "getCommunected");
+	listId["getCommunected"] = new Array();
+ 	map2.on('dragend', function(e) {
+     		showCitoyensClusters(map2, "getCommunected", listId);
+ 		}); showCitoyensClusters(map2,  "getCommunected", listId);
 
 
 });
-
-
 </script>
