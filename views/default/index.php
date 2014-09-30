@@ -121,7 +121,8 @@ $this->pageTitle=$this::moduleTitle;
 
 $(document).ready( function() 
 { 
-	var listId = new Array();
+	//mémorise les identifiants des éléments de chaque carte
+	var listId = new Array(	"getPixelActif", "getCommunected" );
 	
 	function loadMap(canvasId){
 		//initialisation des variables de départ de la carte
@@ -346,7 +347,7 @@ $(document).ready( function()
 	//charge la première carte (pixel actif)
 	var map1 = loadMap("mapCanvasSlide1");
 	map1.setView([30.29702, -21.97266], 3);
-	listId["getPixelActif"] = new Array();
+	listId["getPixelActif"] = new Array("init");
 	map1.on('dragend', function(e) {
     		showCitoyensClusters(map1, "getPixelActif", listId);
 		}); showCitoyensClusters(map1, "getPixelActif", listId);
@@ -355,7 +356,7 @@ $(document).ready( function()
 	//charge la deuxième carte (communected)
 	var map2 = loadMap("mapCanvasSlide2");
 	map2.setView([-21.13318, 55.5314], 10);
-	listId["getCommunected"] = new Array();
+	listId["getCommunected"] = new Array("init");
  	map2.on('dragend', function(e) {
      		showCitoyensClusters(map2, "getCommunected", listId);
  		}); showCitoyensClusters(map2,  "getCommunected", listId);
