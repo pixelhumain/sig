@@ -1,0 +1,898 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    4.8056254,
+                    48.8877908,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mairie de la Possesion",
+                "tag" : "commune",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    55.45588260000001,
+                    -20.877432,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Association Locale d’Insertion par l’Economique \nPLIE Nord",
+                "tag" : "association",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "Eric BAPTISTOChef de projet - Maison de l'Economie Sociale et SolidaireAssociation Locale d’Insertion par l’Economique \nPLIE Nord\n117 rue Pasteur- Local 9002\nBP 146 - 97463 - Saint-Denis cedex\nTél. : 0262 93 39 30  Mob: 0692 48 16 38\nFax : 0262 93 39 34<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    52.5200066,
+                    13.404954,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Open State - Dominik",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "dominik@openstate.cc\n10hoch16.de<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    3.062906,
+                    50.630437,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Unisson",
+                "tag" : "association",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    48.848391,
+                    2.3957263,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Assemblée Virtuelle",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    51.179343,
+                    8.9648438,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Elf Pavlik",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.2612538,
+                    2.2851563,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Simon Sarazin",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.3174081,
+                    2.8125,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Guillaume Libersat",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    45.2748864,
+                    -0.8349609,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Olivier Cortès",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "http://oliviercortes.com/<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -20.8950603,
+                    55.4771805,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ansamb - Places",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    45.184029,
+                    0.721114899999975,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ggouv",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -20.9085309,
+                    55.4840469,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Université de la Réunion",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    42.3584308,
+                    -71.0597732,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "W3C, Social Working Group , LDP, Social Interest Group",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    37.782514,
+                    -122.3939511,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "with Known",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    45.5086699,
+                    -73.55399249999999,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Sensorica, open Value Network",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    40.187109,
+                    44.510846600000036,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "OmPlanet , Narek",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    48.856614,
+                    2.3522219000000177,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Republique Citoyenne, Lancelot Pecquet",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.553621000000021,
+                    47.218371,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Open Odyssée, Samuel Tiercelin",
+                "tag" : "association",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    175.71965,
+                    -39.4402,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Loomio",
+                "tag" : "association",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    174.69155,
+                    -41.2939,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Enspiral",
+                "tag" : "association",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -20.882057,
+                    55.45067500000005,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Ansamb",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    45.4529958,
+                    3.3173265000000356,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "La Maison de Chez Nous",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "Maison d'hôte et d'activités... siège de la SAS ChezNous (contact : Mathieu Coste)<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    45.83361900000001,
+                    1.2611050000000432,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "THC - Armel le Coz",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    41.3850639,
+                    2.1734034999999494,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Smart Citizen - Thomas Diaz",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "IAAC - FAB LAB Barcelone <br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    55.441131591796875,
+                    -21.24586234991347,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Tibor Katelbach",
+                "tag" : "projectLeader",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "La Riviere , 0262343686 <br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    55.35118103027344,
+                    -21.227301848890036,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Jerome Gontier",
+                "tag" : "projectLeader",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.00375310523558,
+                    55.33332824707031,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Stephanie Lorente",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "Directrice Artistique, La Possession, 0692602047<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.030032720249675,
+                    55.32440185546875,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Jeremy Loreau",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "Concepteur Visuel, La Possession, +262 692 38 32 58<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.22474159644541,
+                    55.369720458984375,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Kevin Lainé",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    55.61922800000002,
+                    -21.378514,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mairie de Saint-Joseph",
+                "tag" : "commune",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.044772914961833,
+                    55.2747917175293,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Pierre Magnin",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -20.8833333,
+                    55.43333329999996,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Jerome Malet",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -20.90019208066147,
+                    55.46516418457031,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Loic Damey",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    55.27290344238282,
+                    -21.12581788540357,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Sylvain Barbot",
+                "tag" : "projectLeader",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    43.632472152394456,
+                    3.8294219970703125,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Luc Bonnin",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -22.2659, 
+                    166.49755,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Pierre Yves Fonteix",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    43.64390162623238,
+                    3.8726806640625,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Remi Palard",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.61113171332364,
+                    2.74658203125,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Khalil Patel",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.23882243492625,
+                    55.40748596191406,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "David Durandeau",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.076010894665004,
+                    55.26449203491211,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Luc Lavielle",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    48.95497369808868,
+                    2.7850341796875,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Laurence Uzel",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "Conceptrice Rédactrice<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.569721999999956,
+                    47.191118,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mairie de Rezé",
+                "tag" : "commune",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.384943000000021,
+                    48.656152,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mairie de  Grigny",
+                "tag" : "commune",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    1.840296999999964,
+                    44.978681,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mairie de Beaulieu-sur-Dordogne",
+                "tag" : "commune",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    1.8352260000000344,
+                    44.97514700000001,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mairie d'Altillac",
+                "tag" : "commune",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -21.61791, 
+                    165.4668,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Demosalithia, Tristan Goguet",
+                "tag" : "pixelActif",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "porteur du projet demosalithia<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    55.48636436462402,
+                    -21.33803016059943,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Transfo Coworking",
+                "tag" : "association",
+                "styleUrl": "#icon-959-F4EB37",
+                "styleHash": "-6438514e",
+                "description": "notre espace de travail<br><br>gx_image_links: ",
+                "gx_image_links": ""
+            }
+        }
+    ]
+}
